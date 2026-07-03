@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { HeartIcon } from '@heroicons/react/24/outline'
 import { useWishlistStore } from '@/store/wishlistStore'
 import ProductCard from '@/components/product/ProductCard'
+import SEO from '@/components/SEO'
 
 export default function WishlistPage() {
   const items = useWishlistStore((s) => s.items)
@@ -9,6 +10,7 @@ export default function WishlistPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-24 text-center">
+        <SEO title="Wishlist" description="Your saved products on ShopFlow." noIndex />
         <HeartIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
         <h2 className="text-xl font-bold text-gray-900 mb-2">Your wishlist is empty</h2>
         <p className="text-gray-500 mb-6">Save items you love for later.</p>
@@ -21,6 +23,7 @@ export default function WishlistPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SEO title="Wishlist" description="Your saved products on ShopFlow." noIndex />
       <h1 className="text-2xl font-bold text-gray-900 mb-8">Wishlist ({items.length})</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {items.map((p) => (

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useCartStore } from '@/store/cartStore'
+import SEO from '@/components/SEO'
 
 export default function CheckoutSuccessPage() {
   const [searchParams] = useSearchParams()
@@ -20,6 +21,7 @@ export default function CheckoutSuccessPage() {
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <SEO title="Order Confirmed" description="Your ShopFlow order has been placed successfully." noIndex />
       <div className="max-w-md w-full text-center">
         {/* Animated check */}
         <div className="flex items-center justify-center mb-6">

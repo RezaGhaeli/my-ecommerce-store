@@ -3,6 +3,7 @@ import { ShoppingBagIcon, ExclamationCircleIcon } from '@heroicons/react/24/outl
 import { useCart } from '@/hooks/useCart'
 import CartItem from '@/components/cart/CartItem'
 import Button from '@/components/ui/Button'
+import SEO from '@/components/SEO'
 import { formatPrice } from '@/utils/format'
 
 function OrderSummary({ subtotal, shipping, tax, grandTotal, freeShippingRemaining, startCheckout, isCheckingOut, checkoutError }) {
@@ -102,6 +103,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-24 text-center">
+        <SEO title="Your Cart" description="Review your cart and proceed to checkout." noIndex />
         <ShoppingBagIcon className="w-16 h-16 text-gray-200 mx-auto mb-4" />
         <h2 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
         <p className="text-gray-500 mb-6">Looks like you haven't added anything yet.</p>
@@ -114,6 +116,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SEO title="Your Cart" description="Review your cart and proceed to secure Stripe checkout." noIndex />
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-gray-900">
           Shopping Cart

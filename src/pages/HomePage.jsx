@@ -4,6 +4,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useProducts } from '@/hooks/useProducts'
 import FilterBar from '@/components/product/FilterBar'
 import ProductGrid from '@/components/product/ProductGrid'
+import SEO from '@/components/SEO'
 
 const trustItems = [
   { icon: '🚚', label: 'Free Shipping', sub: 'On all orders over $50' },
@@ -170,6 +171,11 @@ export default function HomePage() {
 
   return (
     <div className="bg-[#f8f8f6] min-h-screen">
+      <SEO
+        title="Shop Smarter, Live Better"
+        description="Discover curated products across electronics, fashion, home, and sport — each picked for quality and delivered fast. Free shipping over $50."
+        path="/"
+      />
       <Hero />
       <TrustStrip />
       <Categories />

@@ -9,6 +9,7 @@ import { useWishlistStore } from '@/store/wishlistStore'
 import StarRating from '@/components/ui/StarRating'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
+import SEO from '@/components/SEO'
 import { formatPrice, calcDiscount } from '@/utils/format'
 
 export default function ProductPage() {
@@ -40,6 +41,13 @@ export default function ProductPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SEO
+        title={product.name}
+        description={`${product.description} — ${product.inStock ? 'In stock' : 'Out of stock'}. ${product.rating}★ (${product.reviewCount.toLocaleString()} reviews).`}
+        image={product.image}
+        path={`/product/${product.id}`}
+        type="product"
+      />
       <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8">
         <ArrowLeftIcon className="w-4 h-4" />
         Back to products

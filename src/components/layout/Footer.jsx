@@ -38,8 +38,8 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-6 text-xs text-gray-600">
           <p>© 2026 ShopFlow, Inc. All rights reserved.</p>
           <div className="flex gap-5">
-            <Link to="/" className="hover:text-gray-400 transition-colors">Privacy Policy</Link>
-            <Link to="/" className="hover:text-gray-400 transition-colors">Terms of Service</Link>
+            <Link to="/privacy" className="hover:text-gray-400 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-gray-400 transition-colors">Terms of Service</Link>
             <Link to="/" className="hover:text-gray-400 transition-colors">Cookie Preferences</Link>
           </div>
         </div>

@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
 import { useSearchFilters } from '@/hooks/useSearchFilters'
 import FiltersSidebar from '@/components/product/FiltersSidebar'
 import ProductGrid from '@/components/product/ProductGrid'
+import SEO from '@/components/SEO'
 import clsx from 'clsx'
 
 const sortOptions = [
@@ -53,6 +53,11 @@ export default function SearchPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SEO
+        title={query ? `Search: "${query}"` : 'Search Products'}
+        description={`Search ShopFlow's catalogue${query ? ` for "${query}"` : ''}. Filter by category, price, rating, and availability.`}
+        path={`/search${query ? `?q=${encodeURIComponent(query)}` : ''}`}
+      />
       {/* Search bar */}
       <div className="relative mb-6 max-w-2xl">
         <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
