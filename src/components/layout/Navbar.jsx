@@ -1,8 +1,9 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { ShoppingCartIcon, HeartIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ShoppingCartIcon, HeartIcon, MagnifyingGlassIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import { useCartStore } from '@/store/cartStore'
 import { useWishlistStore } from '@/store/wishlistStore'
-import { useState, useEffect } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import { useState, useEffect, useRef } from 'react'
 import { categories } from '@/data/products'
 import clsx from 'clsx'
 
@@ -16,14 +17,33 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [announcementVisible, setAnnouncementVisible] = useState(true)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const menuRef = useRef(null)
+  const { isAuthenticated, displayName, initials, signOut } = useAuth()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const handleSignOut = async () => {
+    setUserMenuOpen(false)
+    await signOut()
+    navigate('/')
+  }
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -140,12 +160,57 @@ export default function Navbar() {
                 )}
               </Link>
 
-              <Link
-                to="/checkout"
-                className="hidden sm:flex ml-1 items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors"
-              >
-                Checkout
-              </Link>
+              {/* Auth: avatar dropdown or sign-in link */}
+              {isAuthenticated ? (
+                <div className="relative ml-1" ref={menuRef}>
+                  <button
+                    onClick={() => setUserMenuOpen((v) => !v)}
+                    className="w-8 h-8 rounded-full bg-gray-900 text-white text-xs font-bold flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer select-none"
+                    aria-label="Account menu"
+                  >
+                    {initials || <UserCircleIcon className="w-4 h-4" />}
+                  </button>
+
+                  {userMenuOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-lg py-1 z-50">
+                      <div className="px-4 py-2.5 border-b border-gray-100">
+                        <p className="text-xs font-semibold text-gray-900 truncate">{displayName}</p>
+                      </div>
+                      <Link
+                        to="/account"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <UserCircleIcon className="w-4 h-4" />
+                        My Account
+                      </Link>
+                      <Link
+                        to="/wishlist"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <HeartIcon className="w-4 h-4" />
+                        Wishlist
+                      </Link>
+                      <div className="border-t border-gray-100 mt-1 pt-1">
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="hidden sm:flex ml-1 items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         </div>
