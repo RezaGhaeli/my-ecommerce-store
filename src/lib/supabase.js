@@ -4,15 +4,18 @@ const supabaseUrl  = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey  = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error(
-    'Missing Supabase env vars. Copy .env.example → .env.local and fill in your project credentials.'
+  console.warn(
+    '[ShopFlow] Supabase env vars not set. Copy .env.example → .env.local and fill in your credentials. Auth features are disabled.'
   )
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-  },
-})
+export const supabase =
+  supabaseUrl && supabaseKey
+    ? createClient(supabaseUrl, supabaseKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      })
+    : null

@@ -4,7 +4,10 @@ import { useAuthStore } from '@/store/authStore'
 export function useAuth() {
   const { user, session, loading } = useAuthStore()
 
+  const noSupabase = () => { throw new Error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.local.') }
+
   const signUp = async ({ email, password, fullName }) => {
+    if (!supabase) return noSupabase()
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -18,17 +21,20 @@ export function useAuth() {
   }
 
   const signIn = async ({ email, password }) => {
+    if (!supabase) return noSupabase()
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
     return data
   }
 
   const signOut = async () => {
+    if (!supabase) return noSupabase()
     const { error } = await supabase.auth.signOut()
     if (error) throw error
   }
 
   const sendPasswordReset = async (email) => {
+    if (!supabase) return noSupabase()
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/account/reset-password`,
     })
@@ -36,6 +42,7 @@ export function useAuth() {
   }
 
   const updatePassword = async (newPassword) => {
+    if (!supabase) return noSupabase()
     const { error } = await supabase.auth.updateUser({ password: newPassword })
     if (error) throw error
   }

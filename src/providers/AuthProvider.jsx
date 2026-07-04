@@ -7,12 +7,13 @@ export default function AuthProvider({ children }) {
   const setLoading = useAuthStore((s) => s.setLoading)
 
   useEffect(() => {
-    // Hydrate session on first load
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
 
-    // Keep store in sync with every auth event
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session))
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => setSession(session)
     )
